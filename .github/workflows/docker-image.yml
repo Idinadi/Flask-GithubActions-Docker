@@ -19,6 +19,7 @@ jobs:
       run: docker images
     - name: Run Docker image
       run: |
+           docker login -u ${{ secrets.DOCKER_USERNAME}} -p ${{ secrets.DOCKER_PASSWORD}} docker.io
            docker tag deploy:latest deploy:latest-release
            docker push deploy:latest-release
   
