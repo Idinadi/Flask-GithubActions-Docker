@@ -31,5 +31,5 @@ jobs:
     - name: Pull Docker image
       run: docker pull praveenece443/deploy:latest-release
     - name: Run Application container
-      run: docker run -d -p 80:80 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
+      run: docker run -d -p 8000:8000 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
 
