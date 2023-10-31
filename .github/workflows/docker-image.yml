@@ -13,4 +13,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag deploy:latest
+    - name: Run Docker image
+      run: docker push deploy:latest
   
