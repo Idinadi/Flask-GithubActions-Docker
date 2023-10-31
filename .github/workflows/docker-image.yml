@@ -26,7 +26,7 @@ jobs:
     needs: [build]
     steps:
     - name: Pull Docker image
-      run: docker pull docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest
+      run: docker pull docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
     - name: Run Application container
-      run: docker run -d -p 80:80 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest
+      run: docker run -d -p 80:80 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
 
