@@ -10,7 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3    
+    - name: Login to Docker
+      run: docker login -u ${{ secrets.DOCKER_USERNAME}} -p ${{ secrets.DOCKER_PASSWORD}}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag deploy:latest
     - name: Run Docker image
