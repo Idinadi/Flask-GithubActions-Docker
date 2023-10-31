@@ -21,3 +21,12 @@ jobs:
       run: |
         docker tag deploy:latest docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
         docker push docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+    - name: Pull Docker image
+      run: docker pull docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest
+    - name: Run Application container
+      run: docker run -d -p 80:80 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest
+
