@@ -18,6 +18,7 @@ jobs:
     - name: Check Docker Images
       run: docker images
     - name: Run Docker image
-      run: docker tag deploy:latest deploy:latest-release
+      run: |
+           docker tag deploy:latest deploy:latest-release
            docker push deploy:latest-release
   
