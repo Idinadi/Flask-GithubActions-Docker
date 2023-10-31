@@ -12,14 +12,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3    
     - name: Login to Docker
-      run: docker login -u ${{ secrets.DOCKER_USERNAME}} -p ${{ secrets.DOCKER_PASSWORD}} docker.io
+      run: docker login -u ${{ secrets.DOCKER_USERNAME}} --password-stdin ${{ secrets.DOCKER_PASSWORD}} docker.io
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag deploy:latest
     - name: Check Docker Images
       run: docker images
     - name: Run Docker image
       run: |
-           docker login -u ${{ secrets.DOCKER_USERNAME}} -p ${{ secrets.DOCKER_PASSWORD}} docker.io
+           docker login -u ${{ secrets.DOCKER_USERNAME}} --password-stdin ${{ secrets.DOCKER_PASSWORD}} docker.io
            docker tag deploy:latest deploy:latest-release
            docker push deploy:latest-release
   
