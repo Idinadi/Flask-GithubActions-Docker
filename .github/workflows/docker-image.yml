@@ -19,5 +19,5 @@ jobs:
       run: docker images
     - name: Run Docker image
       run: |
-           docker tag deploy:latest deploy:latest-release
-           docker push deploy:latest-release
+        docker tag deploy:latest docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
+        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
