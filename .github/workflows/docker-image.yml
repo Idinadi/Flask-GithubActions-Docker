@@ -15,6 +15,8 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME}} -p ${{ secrets.DOCKER_PASSWORD}}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag deploy:latest
+    - name: Check Docker Images
+      run: docker images
     - name: Run Docker image
-      run: docker push deploy:latest
+      run: docker push praveenece443/deploy:latest
   
