@@ -36,14 +36,15 @@ jobs:
       run: echo "NGROK_URL=placeholder" >> $GITHUB_ENV
     - name: Update Secrets
       env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          REPO: ${{ github.repository }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        REPO: ${{ github.repository }}
       run: |
-          NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-          echo "NGROK_URL=$NGROK_URL" >> $GITHUB_ENV
-          echo "Updating secret NGROK_URL..."
-          curl -X PUT \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$REPO/actions/secrets/NGROK_URL" \
-            -d "{\"encrypted_value\":\"$(echo -n $NGROK_URL | base64 --wrap=0)\",\"key_id\":\"$(curl -s -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO/actions/secrets/public-key" | jq -r '.key_id')\"}"
+        NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+        ENCODED_URL=$(echo -n $NGROK_URL | base64)
+        echo "NGROK_URL=$ENCODED_URL" >> $GITHUB_ENV
+        echo "Updating secret NGROK_URL..."
+        curl -X PUT \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "Accept: application/vnd.github.v3+json" \
+        "https://api.github.com/repos/$REPO/actions/secrets/NGROK_URL" \
+        -d "{\"encrypted_value\":\"$ENCODED_URL\",\"key_id\":\"$(curl -s -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO/actions/secrets/public-key" | jq -r '.key_id')\"}"
