@@ -34,7 +34,6 @@ jobs:
       run: docker run -d -p 8000:8000 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
     - name: Set Placeholder Secret
       run: echo "NGROK_URL=placeholder" >> $GITHUB_ENV
-
     - name: Update Secrets
       env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
