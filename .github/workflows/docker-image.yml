@@ -32,4 +32,19 @@ jobs:
       run: docker pull praveenece443/deploy:latest-release
     - name: Run Application container
       run: docker run -d -p 8000:8000 --name deploy-container docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
+    - name: Set Placeholder Secret
+      run: echo "NGROK_URL=placeholder" >> $GITHUB_ENV
 
+    - name: Update Secrets
+      env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPO: ${{ github.repository }}
+      run: |
+          NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+          echo "NGROK_URL=$NGROK_URL" >> $GITHUB_ENV
+          echo "Updating secret NGROK_URL..."
+          curl -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/actions/secrets/NGROK_URL" \
+            -d "{\"encrypted_value\":\"$(echo -n $NGROK_URL | base64 --wrap=0)\",\"key_id\":\"$(curl -s -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO/actions/secrets/public-key" | jq -r '.key_id')\"}"
