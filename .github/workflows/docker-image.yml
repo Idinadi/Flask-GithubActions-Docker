@@ -32,4 +32,6 @@ jobs:
       run: docker pull praveenece443/deploy:latest-release
     - name: Run Application container
       run: docker run -d -p 8000:8000 docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release
+    - name: Make request to the container
+      run: curl http://localhost:8000
  
