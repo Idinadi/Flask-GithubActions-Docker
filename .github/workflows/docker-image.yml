@@ -30,9 +30,5 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_USERNAME}} -p ${{ secrets.DOCKER_PASSWORD}} docker.io
     - name: Pull Docker image
       run: docker pull praveenece443/deploy:latest-release
-    - name: Run Application container
-      run: |
-        docker run -dp 8080:5000 -it docker.io/${{ secrets.DOCKER_USERNAME }}/deploy:latest-release /bin/sh
-        curl python server.py
       
  
